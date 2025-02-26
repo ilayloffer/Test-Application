@@ -1,8 +1,11 @@
 package com.example.testapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,4 +58,17 @@ public class MainActivity extends AppCompatActivity {
     private void handleHelp() {
         Toast.makeText(this, "Help clicked", Toast.LENGTH_SHORT).show();
     }
+    {
+    Button button = findViewById(R.id.buttonNext);
+
+    // הגדרת פעולה לכפתור
+        button.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // יצירת Intent כדי לעבור ל-SecondActivity
+            Intent intent = new Intent(MainActivity.this, spActivity.class);
+            startActivity(intent);
+        }
+    });
+}
 }
