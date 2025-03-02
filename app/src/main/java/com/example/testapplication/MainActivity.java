@@ -15,6 +15,8 @@ import androidx.core.graphics.Insets;
 
 public class MainActivity extends AppCompatActivity {
 
+    Button button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +27,18 @@ public class MainActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        button = findViewById(R.id.buttonNext);
+
+        // הגדרת פעולה לכפתור
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // יצירת Intent כדי לעבור ל-SecondActivity
+                Intent intent = new Intent(MainActivity.this, spActivity.class);
+                startActivity(intent);
+            }
         });
     }
 
@@ -58,17 +72,4 @@ public class MainActivity extends AppCompatActivity {
     private void handleHelp() {
         Toast.makeText(this, "Help clicked", Toast.LENGTH_SHORT).show();
     }
-    {
-    Button button = findViewById(R.id.buttonNext);
-
-    // הגדרת פעולה לכפתור
-        button.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // יצירת Intent כדי לעבור ל-SecondActivity
-            Intent intent = new Intent(MainActivity.this, spActivity.class);
-            startActivity(intent);
-        }
-    });
-}
 }
