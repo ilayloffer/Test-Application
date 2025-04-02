@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -37,24 +38,25 @@ public class MainActivity extends AppCompatActivity {
         button = findViewById(R.id.buttonNext);
 
         // Initialize the MediaPlayer
-        mediaPlayer = MediaPlayer.create(this, R.raw.music); // Replace 'music' with your file name in the raw folder
+        mediaPlayer = MediaPlayer.create(this, R.raw.background_music);  // Corrected file name
+
 
         // Set listener for the Switch
         musicSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                if (!mediaPlayer.isPlaying()) {
+                if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
                     mediaPlayer.start(); // Start music
                     musicSwitch.setText("Pause Music");
                 }
             } else {
-                if (mediaPlayer.isPlaying()) {
+                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
                     mediaPlayer.pause(); // Pause music
                     musicSwitch.setText("Play Music");
                 }
             }
         });
 
-        // Set up the button to navigate to another activity (SecondActivity)
+        // Set up the button to navigate to another activity (spActivity)
         button.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, spActivity.class);
             startActivity(intent);
@@ -101,3 +103,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+
