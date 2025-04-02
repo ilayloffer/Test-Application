@@ -1,11 +1,12 @@
 package com.example.testapplication;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +16,9 @@ import androidx.core.graphics.Insets;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button button;
+    private MediaPlayer mediaPlayer;
+    private Switch musicSwitch;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,23 +32,38 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Initialize the Switch and Button
+        musicSwitch = findViewById(R.id.musicSwitch);
         button = findViewById(R.id.buttonNext);
 
-        // הגדרת פעולה לכפתור
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // יצירת Intent כדי לעבור ל-SecondActivity
-                Intent intent = new Intent(MainActivity.this, spActivity.class);
-                startActivity(intent);
+        // Initialize the MediaPlayer
+        mediaPlayer = MediaPlayer.create(this, R.raw.music); // Replace 'music' with your file name in the raw folder
+
+        // Set listener for the Switch
+        musicSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                if (!mediaPlayer.isPlaying()) {
+                    mediaPlayer.start(); // Start music
+                    musicSwitch.setText("Pause Music");
+                }
+            } else {
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.pause(); // Pause music
+                    musicSwitch.setText("Play Music");
+                }
             }
+        });
+
+        // Set up the button to navigate to another activity (SecondActivity)
+        button.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, spActivity.class);
+            startActivity(intent);
         });
     }
 
     // Inflate the options menu with items
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -71,5 +89,15 @@ public class MainActivity extends AppCompatActivity {
     // Handle help action
     private void handleHelp() {
         Toast.makeText(this, "Help clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    // Ensure media player is released when the activity is destroyed to avoid memory leaks
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }
